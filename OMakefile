@@ -1,14 +1,20 @@
+.PHONY: clean
+
 OCAMLFLAGS += -w Ae
+OCAMLINCLUDES += definitions/ strategies/
+
+.SUBDIRS: definitions strategies
 
 FILES[] =
-	definitions
 	simulacrum
+OCAML_LIBS[] +=
+	definitions/libdefinitions
+	strategies/libstrategy
 
 PROGRAM = simulacrum
 
 .DEFAULT: $(OCamlProgram $(PROGRAM), $(FILES))
 
-.PHONY: clean
 clean:
 	rm -f \
 		$(filter-proper-targets $(glob $(addsuffix .*, $(FILES)))) \
