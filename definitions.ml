@@ -1,4 +1,4 @@
-(* the number of rounds players play against each other during a yer *)
+(* the number of rounds players play against each other during a year *)
 let rounds_total = 10
 (* the number of years to simulate *)
 let generations = 200 
