@@ -1,0 +1,14 @@
+.PHONY: all clean
+
+FILES[] =
+	definitions
+	simulacrum
+
+PROGRAM = simulacrum
+
+.DEFAULT: $(OCamlProgram $(PROGRAM), $(FILES))
+
+clean:
+	rm -f \
+		$(filter-proper-targets $(glob $(addsuffix .*, $(FILES)))) \
+		$(PROGRAM).run $(PROGRAM).opt $(PROGRAM)

@@ -1,11 +1,5 @@
+open Definitions ;;
 Random.self_init ()
-
-(* the number of rounds players play against each other during a yer *)
-let rounds_total = 10
-(* the number of years to simulate *)
-let generations = 200 
-
-type move = None | Cooperate | Cheat
 
 class virtual strategy =
 (* all playing strategies are inherited from this class *)
@@ -175,17 +169,6 @@ let players =
     (Array.make 0 (0, new cheater))
     participants
 
-(* 
- * Those below are different from coco, coch, chco and chch defined above. The
- * numbers here are The Rules of The Game; the coco, coch, chco and chch are
- * merely understandings of the given strategy about outcomes.
- *)
-let calculate_score move1 move2 = 
-  match move1, move2 with
-      Cooperate, Cooperate ->  3,  3
-    | Cooperate, Cheat     ->  0,  5
-    | Cheat,     Cooperate ->  5,  0
-    | _                    -> -1, -1
 
 let rec run_match_rec p1 p2 rounds score m1 m2 =
   (*
