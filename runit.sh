@@ -1,2 +1,6 @@
 #!/bin/bash
-for i in `seq 1 $1`; do echo "Step $i"; ./simulacrum >> /tmp/results; done
+for ((i = 1; i <= $1; i++))
+do
+	echo "Step $i"
+	./simulacrum >> /tmp/results
+done
