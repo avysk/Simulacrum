@@ -2,6 +2,7 @@ OCAMLINCLUDES += ../definitions/
 
 FILES[] =
 	strategy
+	idiot
 LIBRARY = libstrategy
 
 OCamlLibrary($(LIBRARY), $(FILES))

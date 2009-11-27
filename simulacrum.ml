@@ -1,14 +1,8 @@
-open Definitions ;;
-open Strategy ;;
+open Definitions
+open Strategy
+open Idiot ;;
+
 Random.self_init ()
-
-
-class idiot =
-object
-  inherit strategy
-  val name = "Idiot"
-  method play _ = if Random.bool () then Cooperate else Cheat
-end
 
 class friendly_idiot =
 object
