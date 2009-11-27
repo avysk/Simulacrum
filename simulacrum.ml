@@ -1,5 +1,4 @@
-open Random ;;
-Random.self_init () ;;
+Random.self_init ()
 
 (* the number of rounds players play against each other during a yer *)
 let rounds_total = 10
