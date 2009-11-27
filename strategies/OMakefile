@@ -1,8 +1,7 @@
 OCAMLINCLUDES += ../definitions/
 
-FILES[] =
-	strategy
-	idiot
+FILES[] = $(removesuffix $(glob *.ml))
+
 LIBRARY = libstrategy
 
 OCamlLibrary($(LIBRARY), $(FILES))

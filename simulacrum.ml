@@ -1,150 +1,32 @@
 open Definitions
-open Strategy
-open Idiot ;;
+(* open Strategy *)
+open Idiot
+open Friendly_idiot
+open Cheater
+open Teacher
+open Die_hard
+open Smartie
+open Content
+open Greedy
+open Chicken
+open Robinhood
+open Envier
+;;
 
 Random.self_init ()
 
-class friendly_idiot =
-object
-  inherit strategy
-  val name = "Friendly idiot"
-  method play _ = Cooperate
-end
-
-class cheater =
-object
-  inherit strategy
-  val name = "Cheater"
-  method play _ = Cheat
-end
-
-class teacher =
-object
-  inherit strategy
-  val name = "Teacher"
-  method play m = match m with
-      None -> Cooperate (* Cooperate during the first round *)
-    |    _ -> m         (* Copy opponent's behavior during the next rounds *)
-end
-
-class die_hard =
-object
-  inherit strategy
-  val name = "Die hard"
-  val mutable cheated = false (* To remember if opponent cheated *)
-  method play m = match m with
-      None      -> cheated <- false; Cooperate (* Never cheat first *)
-      (* and cheat if opponent cheated at least once before *)
-    | Cheat     -> cheated <- true; Cheat
-    | Cooperate -> if (cheated) then Cheat else Cooperate
-end
-
-class virtual count_money =
-(* The base class for the strategies which count average earnings per round *)
-object (self)
-  inherit strategy
-  val mutable my_last = None (* last play of this strategy *)
-  val mutable income = 0.0 (* average income per round *)
-  val mutable moves = 0.0  (* number of rounds played *)
-  val virtual coco : float (* Cooperate-Cooperate profit *)
-  val virtual chco : float (* Cheat-Cooperate profit *)
-  val virtual coch : float (* Cooperate-Cheat profit *)
-  val virtual chch : float (* Cheat-Cheat profit *)
-  (* Constants above should be defined in final strategy classes *)
-  method private virtual cooperate_if : float -> bool
-  (* Cooperate_if takes **some** parameter as input and should return true if
-   * the strategy is going to Cooperate; false otherwise.
-   * MUST be implemented. *) 
-  method play m = match m with
-      None              -> income <- 0.0; moves <- 0.0; my_last <- Cooperate; Cooperate
-    | (Cheat|Cooperate) -> income <- (income +. match my_last, m with
-                                          Cooperate, Cooperate ->  coco
-                                        | Cheat,     Cooperate ->  chco
-                                        | Cooperate, Cheat     ->  coch
-                                        | _                    ->  chch) ;
-                           moves <- (moves +. 1.0) ; 
-                           if self#cooperate_if (income /. moves) then
-                             my_last <- Cooperate
-                           else
-                             my_last <- Cheat;
-                           my_last
-end
-
-class virtual my_money =
-(* The base class for strategies which track own average earnings per round *)
-object
-  inherit count_money
-  val coco =  3.0
-  val chco =  5.0
-  val coch =  0.0
-  val chch = -1.0
-end
-
-class virtual opponent_money =
-(* The base class for strategies which track opponent's average earnings per
- * round *)
-object
-  inherit count_money
-  val coco =  3.0
-  val chco =  0.0
-  val coch =  5.0
-  val chch = -1.0
-end
-
-class smartie =
-object
-  inherit my_money
-  val name = "Smartie"
-  method private cooperate_if = (<=) 2.0
-end
-
-class content =
-object
-  inherit my_money
-  val name = "Content"
-  method private cooperate_if = (<=) 1.75
-end
-
-class greedy =
-object
-  inherit my_money
-  val name = "Greedy"
-  method private cooperate_if = (<=) 3.0
-end
-
-class chicken =
-object
-  inherit my_money
-  val name = "Chicken"
-  method private cooperate_if = (>) 1.75
-end
-
-class robinhood =
-object
-  inherit opponent_money
-  val name = "Robin Hood"
-  method private cooperate_if = (>) 0.0
-end
-
-class envier =
-object
-  inherit opponent_money
-  val name = "Envier"
-  method private cooperate_if = (>) 1.75
-end 
-
 (* Customize here *)
 let participants = [ (8,  new cheater) ;
-                     (0,  new teacher) ;
+                     (8,  new teacher) ;
                      (56, new idiot) ;
-                     (0,  new friendly_idiot) ;
-                     (0,  new die_hard) ;
-                     (0,  new smartie) ;
-                     (0,  new content) ;
-                     (0,  new greedy) ;
-                     (0,  new chicken) ;
-                     (0,  new robinhood) ;
-                     (0,  new envier) ] ;;
+                     (8,  new friendly_idiot) ;
+                     (8,  new die_hard) ;
+                     (8,  new smartie) ;
+                     (8,  new content) ;
+                     (8,  new greedy) ;
+                     (8,  new chicken) ;
+                     (8,  new robinhood) ;
+                     (8,  new envier) ] ;;
 
 let total = List.fold_left (fun sum el -> sum + fst el) 0 participants
 
@@ -154,7 +36,6 @@ let players =
                                      (fun _ -> (0, Oo.copy (snd el)))))
     (Array.make 0 (0, new cheater))
     participants
-
 
 let rec run_match_rec p1 p2 rounds score m1 m2 =
   (*
