@@ -70,18 +70,18 @@ object (self)
    * the strategy is going to Cooperate; false otherwise.
    * MUST be implemented. *) 
   method play m = match m with
-      None      -> income <- 0.0; moves <- 0.0; my_last <- Cooperate; Cooperate
-    | _         -> income <- (income +. match my_last, m with
-                                  Cooperate, Cooperate ->  coco
-                                | Cheat,     Cooperate ->  chco
-                                | Cooperate, Cheat     ->  coch
-                                | _                    ->  chch ) ;
-                              moves <- (moves +. 1.0) ; 
-                              if self#cooperate_if (income /. moves) then
-                                my_last <- Cooperate
-                              else
-                                my_last <- Cheat;
-                              my_last
+      None              -> income <- 0.0; moves <- 0.0; my_last <- Cooperate; Cooperate
+    | (Cheat|Cooperate) -> income <- (income +. match my_last, m with
+                                          Cooperate, Cooperate ->  coco
+                                        | Cheat,     Cooperate ->  chco
+                                        | Cooperate, Cheat     ->  coch
+                                        | _                    ->  chch) ;
+                           moves <- (moves +. 1.0) ; 
+                           if self#cooperate_if (income /. moves) then
+                             my_last <- Cooperate
+                           else
+                             my_last <- Cheat;
+                           my_last
 end
 
 class virtual my_money =
@@ -165,7 +165,7 @@ let total = List.fold_left (fun sum el -> sum + fst el) 0 participants
 let players =
   List.fold_left (fun arr el -> Array.append arr
                                   (Array.init (fst el)
-                                     (fun i -> (0, Oo.copy (snd el)))))
+                                     (fun _ -> (0, Oo.copy (snd el)))))
     (Array.make 0 (0, new cheater))
     participants
 
@@ -201,9 +201,9 @@ let game i j =
 
 let play_round _ =
   let () = Array.iteri (fun i p -> players.(i) <- 0, snd p) players in
-    Array.iteri (fun i pl -> if i = total - 1 then () else
+    Array.iteri (fun i _ -> if i = total - 1 then () else
                    let opps = Array.sub players (i + 1) (total - i - 1) in
-                     Array.iteri (fun j opp -> (game i (j + i + 1))) opps) players
+                     Array.iteri (fun j _ -> (game i (j + i + 1))) opps) players
 
 let cmp a1 a2 = match a1, a2 with
     (n1, _), (n2, _) when n1 = n2 -> 0
