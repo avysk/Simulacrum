@@ -1,5 +1,1 @@
-class content :
-object
-  method get_name: string
-  method play : Definitions.move -> Definitions.move
-end
+class content : Strategy.strategy_t

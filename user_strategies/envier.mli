@@ -1,5 +1,1 @@
-class envier :
-object
-  method get_name: string
-  method play : Definitions.move -> Definitions.move
-end
+class envier : Strategy.strategy_t

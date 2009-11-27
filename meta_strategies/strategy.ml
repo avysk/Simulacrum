@@ -9,3 +9,9 @@ object
   (* Input: the move played by the opponent during the previous round.
    * Output: the move to play this round. *)
 end
+
+class type strategy_t =
+object
+  method get_name : string
+  method play : Definitions.move -> Definitions.move
+end

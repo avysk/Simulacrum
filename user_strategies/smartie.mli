@@ -1,5 +1,1 @@
-class smartie :
-object
-  method get_name: string
-  method play : Definitions.move -> Definitions.move
-end
+class smartie : Strategy.strategy_t
