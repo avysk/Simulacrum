@@ -34,8 +34,7 @@ let players =
   List.fold_left (fun arr el -> Array.append arr
                                   (Array.init (fst el)
                                      (fun _ -> (0, Oo.copy (snd el)))))
-    (Array.make 0 (0, new cheater))
-    participants
+    [||] participants
 
 let rec run_match_rec p1 p2 rounds score m1 m2 =
   (*
