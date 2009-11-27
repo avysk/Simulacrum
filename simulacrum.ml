@@ -1,5 +1,4 @@
 open Definitions
-(* open Strategy *)
 open Idiot
 open Friendly_idiot
 open Cheater
