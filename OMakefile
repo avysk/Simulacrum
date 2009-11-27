@@ -1,15 +1,16 @@
 .PHONY: clean
 
 OCAMLFLAGS += -w Ae
-OCAMLINCLUDES += definitions/ strategies/
+OCAMLINCLUDES += definitions/ user_strategies/
 
-.SUBDIRS: definitions strategies
+.SUBDIRS: definitions meta_strategies user_strategies
 
 FILES[] =
 	simulacrum
 OCAML_LIBS[] +=
 	definitions/libdefinitions
-	strategies/libstrategy
+	meta_strategies/libmetastrategies
+	user_strategies/libuserstrategies
 
 PROGRAM = simulacrum
 
