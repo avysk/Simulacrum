@@ -1,0 +1,10 @@
+OCAMLINCLUDES += ../definitions/
+
+FILES[] =
+	strategy
+LIBRARY = libstrategy
+
+OCamlLibrary($(LIBRARY), $(FILES))
+
+clean:
+	rm -f $(filter-proper-targets $(glob $(addsuffix .*, $(FILES)))) $(LIBRARY).*

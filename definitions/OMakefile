@@ -1,0 +1,9 @@
+FILES[] =
+	definitions
+LIBRARY = libdefinitions
+
+OCamlLibrary($(LIBRARY), $(FILES))
+
+clean:
+	rm -f $(filter-proper-targets $(glob $(addsuffix .*, $(FILES)))) $(LIBRARY).*
+
