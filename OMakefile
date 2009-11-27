@@ -1,4 +1,4 @@
-.PHONY: all clean
+OCAMLFLAGS += -w Ae
 
 FILES[] =
 	definitions
@@ -8,6 +8,7 @@ PROGRAM = simulacrum
 
 .DEFAULT: $(OCamlProgram $(PROGRAM), $(FILES))
 
+.PHONY: clean
 clean:
 	rm -f \
 		$(filter-proper-targets $(glob $(addsuffix .*, $(FILES)))) \
