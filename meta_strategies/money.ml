@@ -17,19 +17,20 @@ object (self)
   (* Cooperate_if takes **some** parameter as input and should return true if
    * the strategy is going to Cooperate; false otherwise.
    * MUST be implemented. *) 
-  method play m = match m with
-      None              -> income <- 0.0; moves <- 0.0; my_last <- Cooperate; Cooperate
-    | (Cheat|Cooperate) -> income <- (income +. match my_last, m with
-                                          Cooperate, Cooperate ->  coco
-                                        | Cheat,     Cooperate ->  chco
-                                        | Cooperate, Cheat     ->  coch
-                                        | _                    ->  chch) ;
-                           moves <- (moves +. 1.0) ; 
-                           if self#cooperate_if (income /. moves) then
-                             my_last <- Cooperate
-                           else
-                             my_last <- Cheat;
-                           my_last
+  method play m =
+    match m with
+    | None -> income <- 0.0; moves <- 0.0; my_last <- Cooperate; Cooperate
+    | (Cheat|Cooperate) ->
+        income <- (income +.
+                   match my_last, m with
+                   | Cooperate, Cooperate ->  coco
+                   | Cheat,     Cooperate ->  chco
+                   | Cooperate, Cheat     ->  coch
+                   | _                    ->  chch) ;
+        moves <- (moves +. 1.0) ; 
+        if self#cooperate_if (income /. moves) then my_last <- Cooperate
+        else my_last <- Cheat;
+        my_last
 end
 
 class virtual my_money =

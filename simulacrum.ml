@@ -70,8 +70,9 @@ let play_round _ =
                    let opps = Array.sub players (i + 1) (total - i - 1) in
                      Array.iteri (fun j _ -> (game i (j + i + 1))) opps) players
 
-let cmp a1 a2 = match a1, a2 with
-    (n1, _), (n2, _) when n1 = n2 -> 0
+let cmp a1 a2 =
+  match a1, a2 with
+  | (n1, _), (n2, _) when n1 = n2 -> 0
   | (n1, _), (n2, _) -> if (n1 > n2) then 1 else -1
 
 let filter_players _ =
@@ -80,12 +81,14 @@ let filter_players _ =
    * player with the highest score.
    *)
   let () = Array.sort cmp players in
-  let rec find_loser k v = match k, v with
-      _ when k = total -> Random.int total
+  let rec find_loser k v =
+    match k, v with
+    | _ when k = total -> Random.int total
     | _ when (fst players.(k) > v) -> Random.int k
     | _ -> find_loser (k + 1) v in
-  let rec find_winner k v = match k, v with
-      -1, _ -> Random.int total
+  let rec find_winner k v =
+    match k, v with
+    | -1, _ -> Random.int total
     | _ when (fst players.(k) < v) -> Random.int (total - k - 1) + k + 1
     | _ -> find_winner (k - 1) v in
   let loser' = find_loser 1 (fst players.(0)) in
