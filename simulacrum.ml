@@ -52,7 +52,7 @@ let rec run_match_rec p1 p2 rounds score m1 m2 =
 let run_match p1 p2 rounds =
   run_match_rec p1 p2 rounds (0, 0) None None
 
-let game i j = 
+let game i j =
   let p_i = players.(i) and
       p_j = players.(j) in
   let p1 = snd p_i and
@@ -76,7 +76,7 @@ let cmp a1 a2 =
   | (n1, _), (n2, _) -> if (n1 > n2) then 1 else -1
 
 let filter_players _ =
-  (* 
+  (*
    * This function kills random player with the lowest score, and clones random
    * player with the highest score.
    *)
@@ -118,7 +118,7 @@ let do_display _ =
     print_newline ()
 
 let rec do_the_job n =
-  if (n = 0) then do_display () else 
+  if (n = 0) then do_display () else
     let () = play_round () in
     let () = filter_players () in
       do_the_job (n - 1) ;;
